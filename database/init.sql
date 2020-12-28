@@ -2,7 +2,7 @@ CREATE database IF NOT EXISTS nokes;
 CREATE TABLE IF NOT EXISTS `nokes`.`user` (
     `userid` VARCHAR(20) NOT NULL,
     `name` VARCHAR(45) NOT NULL,
-    `email` VARCHAR(45) NOT NULL,
+    `email` VARCHAR(100) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`userid`)
 );
@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS `nokes`.`note` (
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_note_user` FOREIGN KEY (`fk_userid`) REFERENCES `nokes`.`user`(`userid`) ON DELETE CASCADE ON UPDATE NO ACTION
 );
-CREATE USER 'NokesUser' @'localhost' IDENTIFIED BY 'nokesUserP4ssw0rd';
+CREATE USER 'NokesUser' @'%' IDENTIFIED BY 'nokesUserP4ssw0rd';
 GRANT SELECT,
     INSERT,
     UPDATE,
-    DELETE ON nokes.* TO 'NokesUser' @'localhost';
+    DELETE ON nokes.* TO 'NokesUser' @'%';

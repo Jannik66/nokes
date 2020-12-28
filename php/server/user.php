@@ -100,9 +100,9 @@ function createUser($user)
         $stmt->close();
     }
 
-    // TODO handle error string and redirect to other site
-    echo "ErrorString:";
-    echo $errorString;
+    // TODO handle error string
+    //echo "ErrorString:";
+    //echo $errorString;
 }
 
 function loginUser($loginUser)
@@ -161,7 +161,13 @@ function loginUser($loginUser)
         $result->free();
     }
 
-    // TODO handle error string and redirect to other site
-    echo "ErrorString:";
-    echo $errorString;
+    // TODO handle error string
+    //echo "ErrorString:";
+    //echo $errorString;
+}
+function logoutUser()
+{
+    session_start();
+    $_SESSION = array();
+    session_destroy();
 }
