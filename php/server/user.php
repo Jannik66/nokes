@@ -89,7 +89,8 @@ function createUser($user)
             $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
         }
         // Parameter an Query binden mit bind_param();
-        if (!$stmt->bind_param('ssss', $userid, $name, $email, password_hash($password, PASSWORD_BCRYPT))) {
+        $hashedPW = password_hash($password, PASSWORD_BCRYPT);
+        if (!$stmt->bind_param('ssss', $userid, $name, $email, $hashedPW)) {
             $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
         }
         // query ausführen mit execute();
