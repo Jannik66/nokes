@@ -65,16 +65,12 @@ function createNote($note)
         $stmt->close();
     }
 
-    // TODO handle error string
-    //echo "ErrorString:";
-    //echo $errorString;
+    return $errorString;
 }
 function getNotesByUser()
 {
     // Database connection
     include('sqlConnection.php');
-
-    session_start();
 
     $userid = $_SESSION["userid"];
     // SELECT Query erstellen
@@ -96,8 +92,59 @@ function getNotesByUser()
     $notes = $stmt->get_result();
     $stmt->close();
 
-    // TODO handle error string
-    //echo "ErrorString:";
-    //echo $errorString;
-    return $notes;
+    // return result if any. else --> error
+    if ($notes) {
+        return $notes;
+    } else {
+        return $errorString;
+    }
+}
+function deleteNoteById($id)
+{
+    // Database connection
+    include('sqlConnection.php');
+
+    $userid = $_SESSION["userid"];
+    // SELECT Query erstellen
+    $query = "SELECT * FROM note WHERE id = ?";
+    // Query vorbereiten mit prepare();
+    $stmt = $mysqli->prepare($query);
+    if ($stmt === false) {
+        $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+    }
+    // Parameter an Query binden mit bind_param();
+    if (!$stmt->bind_param('s', $id)) {
+        $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+    }
+    // query ausführen mit execute();
+    if (!$stmt->execute()) {
+        $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+    }
+    // Verbindung schliessen
+    $notes = $stmt->get_result();
+    $stmt->close();
+
+    if ($notes[0] && $notes[0]['userid'] === $userid) {
+        // SELECT Query erstellen
+        $query = "DELETE * FROM note WHERE id = ?";
+        // Query vorbereiten mit prepare();
+        $stmt = $mysqli->prepare($query);
+        if ($stmt === false) {
+            $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+        }
+        // Parameter an Query binden mit bind_param();
+        if (!$stmt->bind_param('s', $id)) {
+            $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+        }
+        // query ausführen mit execute();
+        if (!$stmt->execute()) {
+            $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+        }
+        // Verbindung schliessen
+        $stmt->close();
+    } else {
+        $errorString .= 'Note not found or user is not owner of note';
+    }
+
+    return $errorString;
 }

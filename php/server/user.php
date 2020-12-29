@@ -100,9 +100,7 @@ function createUser($user)
         $stmt->close();
     }
 
-    // TODO handle error string
-    //echo "ErrorString:";
-    //echo $errorString;
+    return $errorString;
 }
 
 function loginUser($loginUser)
@@ -161,9 +159,7 @@ function loginUser($loginUser)
         $result->free();
     }
 
-    // TODO handle error string
-    //echo "ErrorString:";
-    //echo $errorString;
+    return $errorString;
 }
 function logoutUser()
 {
