@@ -47,14 +47,14 @@ function createNote($note)
 
     if (empty($errorString)) {
         // INPUT Query erstellen
-        $query = "INSERT INTO note(id, title, content, fk_userid) VALUES (?,?,?,?)";
+        $query = "INSERT INTO note(id, title, content, done, fk_userid) VALUES (?,?,?,?,?)";
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($query);
         if ($stmt === false) {
             $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
         }
         // Parameter an Query binden mit bind_param();
-        if (!$stmt->bind_param('ssss', $id, $title, $content, $userid)) {
+        if (!$stmt->bind_param('ssss', $id, $title, $content, false, $userid)) {
             $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
         }
         // query ausführen mit execute();
