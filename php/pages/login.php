@@ -4,8 +4,8 @@ $error ="";
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $error = loginUser($_POST);
     if (empty($error)) {
-      echo $_SESSION['name'];
-    } 
+      header("Location: index.php");
+    }
   }
 ?>
 <!DOCTYPE html>

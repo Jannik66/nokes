@@ -3,6 +3,9 @@ include('../server/user.php');
 $error="";
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $error = createUser($_POST);
+    if (empty($error)) {
+        header("Location: login.php");
+      }
     }
 
 
