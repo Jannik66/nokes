@@ -1,4 +1,5 @@
 <?php
+include('../server/note.php');
 session_start();
 ?>
 <!DOCTYPE html>
@@ -52,7 +53,17 @@ EOT;
             </div>
         </div>
     </nav>
-
+    <div>
+        <?php
+        if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
+            foreach (getNotesByUserId($_SESSION["userid"]) as $note) {
+                echo <<<EOT
+                            <h1>{$note['title']}</h1>
+                        EOT;
+            };
+        }
+        ?>
+    </div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>

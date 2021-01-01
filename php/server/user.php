@@ -64,7 +64,7 @@ function createUser($user)
     }
 
     if (empty($errorString)) {
-        $query = "SELECT * FROM user where userid=? limit 1";
+        $query = "SELECT * FROM user where userid=? LIMIT 1";
         $stmt = $mysqli->prepare($query);
 
         $stmt->bind_param("s", $userid);
@@ -129,7 +129,7 @@ function loginUser($loginUser)
 
     if (empty($errorString)) {
 
-        $query = "SELECT * FROM user where userid=? limit 1";
+        $query = "SELECT * FROM user where userid=? LIMIT 1";
         $stmt = $mysqli->prepare($query);
 
         $stmt->bind_param("s", $userid);
@@ -159,6 +159,102 @@ function loginUser($loginUser)
 
         $result->free();
     }
+
+    return $errorString;
+}
+function editUser($userid, $user)
+{
+    // Database connection
+    include('sqlConnection.php');
+
+    $errorString = '';
+
+    $letterOnly = "/^[a-zA-Z]+$/i";
+    $passwordPattern = "/^[ -~]+$/";
+
+    // Validation of name
+    // not empty
+    // length: 3-45
+    $trimmedName = trim($user["name"]);
+    if (
+        !empty($trimmedName) &&
+        strlen($trimmedName) >= 3 && strlen($trimmedName) <= 45
+    ) {
+        $name = htmlentities($trimmedName);
+    } else {
+        $errorString .= "Invalid name\n";
+    }
+
+    // Validation of email
+    // not empty
+    // length: 1-100
+    $trimmedEmail = trim($user["email"]);
+    if (
+        !empty($trimmedEmail) &&
+        strlen($trimmedEmail) >= 1 && strlen($trimmedEmail) <= 100
+    ) {
+        $email = htmlentities($trimmedEmail);
+    } else {
+        $errorString .= "Invalid email\n";
+    }
+
+    // Validation of password
+    // not empty
+    // length: 8-255
+    if (
+        !empty($user["password"]) &&
+        strlen($user["password"]) >= 8 && strlen($user["password"]) <= 255 &&
+        preg_match($passwordPattern, $user["password"])
+    ) {
+        $password = htmlentities($user["password"]);
+    } else {
+        $errorString .= "Invalid password\n";
+    }
+
+    if (empty($errorString)) {
+        // INPUT Query erstellen
+        $query = "UPDATE user SET name = ?, email = ?, password = ? where userid = ?";
+        // Query vorbereiten mit prepare();
+        $stmt = $mysqli->prepare($query);
+        if ($stmt === false) {
+            $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+        }
+        // Parameter an Query binden mit bind_param();
+        $hashedPW = password_hash($password, PASSWORD_BCRYPT);
+        if (!$stmt->bind_param('ssss', $name, $email, $hashedPW, $userid)) {
+            $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+        }
+        // query ausführen mit execute();
+        if (!$stmt->execute()) {
+            $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+        }
+        // Verbindung schliessen
+        $stmt->close();
+    }
+
+    return $errorString;
+}
+function deleteUserById($userid)
+{
+    // Database connection
+    include('sqlConnection.php');
+    // SELECT Query erstellen
+    $query = "DELETE * FROM user WHERE id = ?";
+    // Query vorbereiten mit prepare();
+    $stmt = $mysqli->prepare($query);
+    if ($stmt === false) {
+        $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+    }
+    // Parameter an Query binden mit bind_param();
+    if (!$stmt->bind_param('s', $userid)) {
+        $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+    }
+    // query ausführen mit execute();
+    if (!$stmt->execute()) {
+        $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+    }
+    // Verbindung schliessen
+    $stmt->close();
 
     return $errorString;
 }
