@@ -33,7 +33,7 @@ session_start();
          {$_SESSION['userid']}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="settings.php">Settings</a></li>
             <li><a class="dropdown-item" href="logout.php">Logout</a></li>
           </ul>
         </li>
