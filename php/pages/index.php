@@ -12,15 +12,16 @@ function doneFilter($note)
     return $note[3] === 1;
 }
 
-
-foreach (getNotesByUserId($_SESSION["userid"]) as $note) {
-    if (array_key_exists($note[0], $_POST)) {
-        markNoteAsDone($note[0], $_SESSION['userid']);
+if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
+    foreach (getNotesByUserId($_SESSION["userid"]) as $note) {
+        if (array_key_exists($note[0], $_POST)) {
+            markNoteAsDone($note[0], $_SESSION['userid']);
+        }
     }
-}
-$notes = getNotesByUserId($_SESSION["userid"]);
-$openNotes = array_filter($notes, 'openFilter');
-$doneNotes = array_filter($notes, 'doneFilter');
+    $notes = getNotesByUserId($_SESSION["userid"]);
+    $openNotes = array_filter($notes, 'openFilter');
+    $doneNotes = array_filter($notes, 'doneFilter');
+};
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +40,7 @@ $doneNotes = array_filter($notes, 'doneFilter');
 
     <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand">Nokes</a>
+            <a class="navbar-brand" href="index.php">Nokes</a>
             <div class="d-flex justify-content-end" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <?php
@@ -58,7 +59,7 @@ $doneNotes = array_filter($notes, 'doneFilter');
           </ul>
         </li>
 EOT;
-                    } elseif (empty($_SESSION['loggedin'])) {
+                    } else {
                         echo <<<EOT
                     <li class="nav-item">
                         <a class="nav-link" href="login.php">Login</a>
@@ -66,10 +67,10 @@ EOT;
                     <li class="nav-item">
                         <a class="nav-link" href="register.php">Register</a>
                     </li>
-                </ul>
 EOT;
                     }
                     ?>
+                </ul>
             </div>
         </div>
     </nav>

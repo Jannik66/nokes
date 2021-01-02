@@ -26,17 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </head>
 
 <body>
-    <h1> Register here</h1>
+    <div class="container col-4 mt-5">
+        <h1>Create Note</h1>
 
-    <?php
-    // Ausgabe der Fehlermeldungen
-    if (strlen($error)) {
-        echo "<div class=\"alert alert-danger\" role=\"alert\">" . $error . "</div>";
-    }
+        <?php
+        // Ausgabe der Fehlermeldungen
+        if (strlen($error)) {
+            echo "<div class=\"alert alert-danger\" role=\"alert\">" . $error . "</div>";
+        }
 
 
-    if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
-        echo <<<EOT
+        if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
+            echo <<<EOT
     <form action ="" method="post">
         <div class="form-group">
             <label for="title">Title</label>
@@ -45,18 +46,21 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         <div class="form-group">
             <label for="content">Content</label>
-            <input type="text" name="content" class="form-control" id="content" value="" required/>
+            <textarea name="content" id="title" class ="form-control" rows = "5" cols = "50" name = "description"></textarea>
         </div>      
         
         <input type="hidden" name="userid" value="{$_SESSION['userid']}" />
 
-        <button type="submit" name="button" value="submit">Submit</button>
+        <div class="d-grid mt-4">
+        <button class="btn btn-dark type="submit" name="button" value="submit">Submit</button>
     </form>
+    </div>
  EOT;
-    } elseif (empty($_SESSION['loggedin'])) {
-        header("Location: index.php");
-    }
-    ?>
+        } elseif (empty($_SESSION['loggedin'])) {
+            header("Location: index.php");
+        }
+        ?>
+    </div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>

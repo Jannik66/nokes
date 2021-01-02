@@ -25,18 +25,27 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </head>
 
 <body>
+    <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">Nokes</a>
+            <div class="d-flex justify-content-end" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container col-4 mt-5">
-    <h1> Settings </h1>
+        <h1> Settings </h1>
 
-    <?php
-    // Ausgabe der Fehlermeldungen
-    if (strlen($error)) {
-        echo "<div class=\"alert alert-danger\" role=\"alert\">" . $error . "</div>";
-    }
-    ?>
-    <?php
-    if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
-        echo <<<EOT
+        <?php
+        // Ausgabe der Fehlermeldungen
+        if (strlen($error)) {
+            echo "<div class=\"alert alert-danger\" role=\"alert\">" . $error . "</div>";
+        }
+        ?>
+        <?php
+        if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
+            echo <<<EOT
     <form action ="" method="post">
         <div class="form-group">
             <label for="name">Name</label>
@@ -58,10 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     </form>
     </div>
  EOT;
-    } elseif (empty($_SESSION['loggedin'])) {
-        header("Location: index.php");
-    }
-    ?>
+        } elseif (empty($_SESSION['loggedin'])) {
+            header("Location: index.php");
+        }
+        ?>
     </div>
 </body>
 
