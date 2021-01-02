@@ -1,6 +1,26 @@
 <?php
 include('../server/note.php');
 session_start();
+
+
+function openFilter($note)
+{
+    return $note[3] === 0;
+}
+function doneFilter($note)
+{
+    return $note[3] === 1;
+}
+
+
+foreach (getNotesByUserId($_SESSION["userid"]) as $note) {
+    if (array_key_exists($note[0], $_POST)) {
+        markNoteAsDone($note[0], $_SESSION['userid']);
+    }
+}
+$notes = getNotesByUserId($_SESSION["userid"]);
+$openNotes = array_filter($notes, 'openFilter');
+$doneNotes = array_filter($notes, 'doneFilter');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,27 +74,22 @@ EOT;
         </div>
     </nav>
     <div class="container mt-4">
-    <?php
-    if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
-        echo <<<EOT
+        <?php
+        if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
+            echo <<<EOT
         <h2>Open</h2>
         <div class="container">
         <div class="row">
 EOT;
-        foreach (getNotesByUserId($_SESSION["userid"]) as $note) {
-            if (array_key_exists($note['id'], $_POST)) {
-                markNoteAsDone($note['id'], $_SESSION['userid']);
-            }
-            if ($note['done'] == 0) {
-
+            foreach ($openNotes as $note) {
                 echo <<<EOT
                             <div class="col-sm">
                             <div class="card" style="width: 18rem;">
                             <div class="card-body">
-                            <h5 class="card-title">{$note['title']}</h5>
-                            <p class="card-text">{$note['content']}</p>
+                            <h5 class="card-title">{$note[1]}</h5>
+                            <p class="card-text">{$note[2]}</p>
                             <form method="post"> 
-                            <input type="submit" name="{$note['id']}"
+                            <input type="submit" name="{$note[0]}"
                                     class="button" value="Button1" /> 
                             </form>
                             </div>
@@ -82,8 +97,7 @@ EOT;
                             </div>
                         EOT;
             }
-        }
-        echo <<<EOT
+            echo <<<EOT
                             </div>
                             </div>
                             <h2>Done</h2>
@@ -92,17 +106,15 @@ EOT;
 
         EOT;
 
-        foreach (getNotesByUserId($_SESSION["userid"]) as $note) {
-            if ($note['done'] == 1) {
-
+            foreach ($doneNotes as $note) {
                 echo <<<EOT
                             <div class="col-sm">
                             <div class="card" style="width: 18rem;">
                             <div class="card-body">
-                            <h5 class="card-title">{$note['title']}</h5>
-                            <p class="card-text">{$note['content']}</p>
+                            <h5 class="card-title">{$note[1]}</h5>
+                            <p class="card-text">{$note[2]}</p>
                             <form method="post"> 
-                            <input type="submit" name="{$note['id']}"
+                            <input type="submit" name="{$note[0]}"
                                     class="button" value="Button1" /> 
                             </form>
                             </div>
@@ -111,13 +123,12 @@ EOT;
                         EOT;
             };
         };
-    };
 
 
-    ?>
+        ?>
     </div>
     </div>
-</div>
+    </div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
