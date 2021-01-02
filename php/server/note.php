@@ -93,7 +93,7 @@ function getNotesByUserId($userid)
 
     // return result if any. else --> error
     if ($notes) {
-        return $notes;
+        return $notes->fetch_all();
     } else {
         return $errorString;
     }
