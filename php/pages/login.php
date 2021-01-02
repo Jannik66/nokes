@@ -22,7 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </head>
 
 <body>
-
+<nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">Nokes</a>
+            <div class="d-flex justify-content-end" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                </ul>
+            </div>
+        </div>
+    </nav>
   <?php
   // Ausgabe der Fehlermeldungen
   if (strlen($error)) {

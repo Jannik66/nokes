@@ -22,6 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">Nokes</a>
+            <div class="d-flex justify-content-end" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container col-4 mt-5">
     <h1> Register here</h1>
 
