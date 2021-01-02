@@ -17,17 +17,17 @@ session_start();
 
 <body>
 
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand">Nokes</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <div class="d-flex justify-content-end" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <?php
                     if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
                         echo <<<EOT
+                        <li class="nav-item">
+                        <a class="nav-link" href="create.php">New Note</a>
+                    </li>
  <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
          {$_SESSION['userid']}
@@ -53,17 +53,71 @@ EOT;
             </div>
         </div>
     </nav>
-    <div>
-        <?php
-        if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
-            foreach (getNotesByUserId($_SESSION["userid"]) as $note) {
+    <div class="container mt-4">
+    <?php
+    if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
+        echo <<<EOT
+        <h2>Open</h2>
+        <div class="container">
+        <div class="row">
+EOT;
+        foreach (getNotesByUserId($_SESSION["userid"]) as $note) {
+            if (array_key_exists($note['id'], $_POST)) {
+                markNoteAsDone($note['id'], $_SESSION['userid']);
+            }
+            if ($note['done'] == 0) {
+
                 echo <<<EOT
-                            <h1>{$note['title']}</h1>
+                            <div class="col-sm">
+                            <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                            <h5 class="card-title">{$note['title']}</h5>
+                            <p class="card-text">{$note['content']}</p>
+                            <form method="post"> 
+                            <input type="submit" name="{$note['id']}"
+                                    class="button" value="Button1" /> 
+                            </form>
+                            </div>
+                            </div>
+                            </div>
+                        EOT;
+            }
+        }
+        echo <<<EOT
+                            </div>
+                            </div>
+                            <h2>Done</h2>
+                            <div class="container">
+                            <div class="row">
+
+        EOT;
+
+        foreach (getNotesByUserId($_SESSION["userid"]) as $note) {
+            if ($note['done'] == 1) {
+
+                echo <<<EOT
+                            <div class="col-sm">
+                            <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                            <h5 class="card-title">{$note['title']}</h5>
+                            <p class="card-text">{$note['content']}</p>
+                            <form method="post"> 
+                            <input type="submit" name="{$note['id']}"
+                                    class="button" value="Button1" /> 
+                            </form>
+                            </div>
+                            </div>
+                            </div>
                         EOT;
             };
-        }
-        ?>
+        };
+    };
+
+
+    ?>
     </div>
+    </div>
+</div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
