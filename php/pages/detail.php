@@ -1,16 +1,17 @@
 <?php
+$id = $_GET['id'];
 include('../server/note.php');
-include('../server/user.php');
 session_start();
+$note = getNoteById($id, $_SESSION['userid']);
+
 $error = "";
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $error = createNote($_POST);
+    $error = editNote($id, $_SESSION['userid'], $_POST);
     if (empty($error)) {
         header("Location: index.php");
     }
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,33 +27,40 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </head>
 
 <body>
+    <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">Nokes</a>
+            <div class="d-flex justify-content-end" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container col-4 mt-5">
-        <h1>Create Note</h1>
+        <h1><?php echo $note[1] ?></h1>
 
         <?php
         // Ausgabe der Fehlermeldungen
         if (strlen($error)) {
             echo "<div class=\"alert alert-danger\" role=\"alert\">" . $error . "</div>";
         }
-
-
+        ?>
+        <?php
         if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
             echo <<<EOT
     <form action ="" method="post">
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" name="title" class="form-control" id="title" maxLength="50" required/>
+            <input type="text" name="title" class="form-control" id="title" maxLength="50" value="{$note[1]}" required/>
         </div>
-
         <div class="form-group">
-            <label for="content">Content</label>
-            <textarea name="content" id="title" class ="form-control" rows = "5" cols = "50" maxLength="500" name = "description" required></textarea>
-        </div>      
-        
-        <input type="hidden" name="userid" value="{$_SESSION['userid']}" />
-
+        <label for="content">Content</label>
+        <textarea name="content" id="title" class ="form-control" rows = "5" cols = "50" " name = "description" maxLength="500" required>{$note[2]}</textarea>
+    </div> 
+        <input type="hidden" name="fk_userid" value="{$note[4]}" />
+        <input type="hidden" name="done" value="{$note[3]}" />
         <div class="d-grid mt-4">
-        <button class="btn btn-dark type="submit" name="button" value="submit">Submit</button>
+        <button class="btn btn-dark" type="submit" name="button" value="submit">Edit Note</button>
     </form>
     </div>
  EOT;

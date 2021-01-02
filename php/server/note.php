@@ -98,6 +98,36 @@ function getNotesByUserId($userid)
         return $errorString;
     }
 }
+function getNoteById($id, $userid)
+{
+    // Database connection
+    include('sqlConnection.php');
+    // SELECT Query erstellen
+    $query = "SELECT * FROM note WHERE id = ? AND fk_userid = ? LIMIT 1";
+    // Query vorbereiten mit prepare();
+    $stmt = $mysqli->prepare($query);
+    if ($stmt === false) {
+        $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+    }
+    // Parameter an Query binden mit bind_param();
+    if (!$stmt->bind_param('ss', $id, $userid)) {
+        $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+    }
+    // query ausführen mit execute();
+    if (!$stmt->execute()) {
+        $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+    }
+    // Verbindung schliessen
+    $notes = $stmt->get_result();
+    $stmt->close();
+
+    // return result if any. else --> error
+    if ($notes) {
+        return $notes->fetch_array();
+    } else {
+        return $errorString;
+    }
+}
 function markNoteAsDone($id, $userid)
 {
     // Database connection
