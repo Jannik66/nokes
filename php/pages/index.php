@@ -89,9 +89,10 @@ EOT;
                             <h5 class="card-title">{$note[1]}</h5>
                             <p class="card-text">{$note[2]}</p>
                             <form method="post"> 
-                            <input type="submit" name="{$note[0]}"
-                                    class="button" value="Button1" /> 
+                            <input class="btn btn-primary" type="submit" name="{$note[0]}"
+                                    class="button" value="Done" /> 
                             </form>
+                            <a class="btn btn-primary" href="detail.php?id={$note[0]}" role="button">Detail</a>
                             </div>
                             </div>
                             </div>
@@ -114,9 +115,10 @@ EOT;
                             <h5 class="card-title">{$note[1]}</h5>
                             <p class="card-text">{$note[2]}</p>
                             <form method="post"> 
-                            <input type="submit" name="{$note[0]}"
-                                    class="button" value="Button1" /> 
+                            <input class="btn btn-primary" type="submit" name="{$note[0]}"
+                                    class="button" value="Done" /> 
                             </form>
+                            <a class="btn btn-primary" href="detail.php?id={$note[0]}" role="button">Detail</a>
                             </div>
                             </div>
                             </div>
