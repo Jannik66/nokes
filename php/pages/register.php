@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <div class="container col-4 mt-5">
     <h1> Register here</h1>
 
     <?php
@@ -55,8 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             placeholder="Mixture of uppercase and lowercase, numbers, special characters, no mutated vowels and must be at least 8 characters long"
             pattern="^[ -~]+$" minLength="8" maxLength="255" value="" required/>
         </div>
-        <button type="submit" name="button" value="submit">Submit</button>
+        <div class="d-grid mt-4">
+        <button class="btn btn-dark" type="submit" name="button" value="submit">Submit</button>
     </form>
+    </div>
+    </div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
