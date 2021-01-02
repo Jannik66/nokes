@@ -150,6 +150,8 @@ function loginUser($loginUser)
                 $_SESSION['loggedin'] = true;
                 $_SESSION['userid'] = $firstRow['userid'];
                 $_SESSION['name'] = $firstRow['name'];
+                $_SESSION['email'] = $firstRow['email'];
+                session_regenerate_id();
             }
 
             if (!isset($_SESSION['loggedin']) or isset($_SESSION['loggedin']) and !$_SESSION['loggedin']) {
@@ -227,6 +229,12 @@ function editUser($userid, $user)
         // query ausführen mit execute();
         if (!$stmt->execute()) {
             $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+        }
+
+        if (empty($errorString)) {
+            $_SESSION['name'] = $name;
+            $_SESSION['email'] = $email;
+            session_regenerate_id();
         }
         // Verbindung schliessen
         $stmt->close();
