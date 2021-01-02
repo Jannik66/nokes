@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </head>
 
 <body>
+    <div class="container col-4 mt-5">
     <h1> Settings </h1>
 
     <?php
@@ -44,22 +45,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" name="email" class="form-control" id="email" value="" required/>
+            <input type="email" name="email" class="form-control" id="email" value="{$_SESSION['email']}" required/>
         </div>
 
         <div class="form-group">
             <label for="password">Password</label>
             <input type="password" name="password" class="form-control" id="password" 
-            placeholder="Mixture of uppercase and lowercase, numbers, special characters, no mutated vowels and must be at least 8 characters long"
             pattern="^[ -~]+$" minLength="8" maxLength="255" value="" required/>
         </div>
-        <button type="submit" name="button" value="submit">Submit</button>
+        <div class="d-grid mt-4">
+        <button class="btn btn-dark" type="submit" name="button" value="submit">Submit</button>
     </form>
+    </div>
  EOT;
     } elseif (empty($_SESSION['loggedin'])) {
         header("Location: index.php");
     }
     ?>
+    </div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>

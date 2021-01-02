@@ -103,6 +103,8 @@ function markNoteAsDone($id, $userid)
     // Database connection
     include('sqlConnection.php');
 
+    $errorString = '';
+
     // SELECT Query erstellen
     $query = "SELECT * FROM note WHERE id = ?";
     // Query vorbereiten mit prepare();
@@ -122,7 +124,8 @@ function markNoteAsDone($id, $userid)
     $notes = $stmt->get_result();
     $stmt->close();
 
-    if ($notes[0] && $notes[0]['userid'] === $userid) {
+    $note = mysqli_fetch_assoc($notes);
+    if ($note && $note['fk_userid'] === $userid) {
         // SELECT Query erstellen
         $query = "UPDATE note SET done = 1 WHERE id = ?";
         // Query vorbereiten mit prepare();
