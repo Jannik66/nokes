@@ -77,15 +77,15 @@ function getNotesByUserId($userid)
     // Query vorbereiten mit prepare();
     $stmt = $mysqli->prepare($query);
     if ($stmt === false) {
-        $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'prepare() failed ' . $mysqli->error . '<br />';
     }
     // Parameter an Query binden mit bind_param();
     if (!$stmt->bind_param('s', $userid)) {
-        $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'bind_param() failed ' . $mysqli->error . '<br />';
     }
     // query ausführen mit execute();
     if (!$stmt->execute()) {
-        $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'execute() failed ' . $mysqli->error . '<br />';
     }
     // Verbindung schliessen
     $notes = $stmt->get_result();
@@ -107,15 +107,15 @@ function getNoteById($id, $userid)
     // Query vorbereiten mit prepare();
     $stmt = $mysqli->prepare($query);
     if ($stmt === false) {
-        $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'prepare() failed ' . $mysqli->error . '<br />';
     }
     // Parameter an Query binden mit bind_param();
     if (!$stmt->bind_param('ss', $id, $userid)) {
-        $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'bind_param() failed ' . $mysqli->error . '<br />';
     }
     // query ausführen mit execute();
     if (!$stmt->execute()) {
-        $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'execute() failed ' . $mysqli->error . '<br />';
     }
     // Verbindung schliessen
     $notes = $stmt->get_result();
@@ -140,15 +140,15 @@ function markNoteAsDone($id, $userid)
     // Query vorbereiten mit prepare();
     $stmt = $mysqli->prepare($query);
     if ($stmt === false) {
-        $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'prepare() failed ' . $mysqli->error . '<br />';
     }
     // Parameter an Query binden mit bind_param();
     if (!$stmt->bind_param('s', $id)) {
-        $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'bind_param() failed ' . $mysqli->error . '<br />';
     }
     // query ausführen mit execute();
     if (!$stmt->execute()) {
-        $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'execute() failed ' . $mysqli->error . '<br />';
     }
     // Verbindung schliessen
     $notes = $stmt->get_result();
@@ -161,15 +161,15 @@ function markNoteAsDone($id, $userid)
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($query);
         if ($stmt === false) {
-            $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'prepare() failed ' . $mysqli->error . '<br />';
         }
         // Parameter an Query binden mit bind_param();
         if (!$stmt->bind_param('s', $id)) {
-            $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'bind_param() failed ' . $mysqli->error . '<br />';
         }
         // query ausführen mit execute();
         if (!$stmt->execute()) {
-            $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'execute() failed ' . $mysqli->error . '<br />';
         }
         // Verbindung schliessen
         $stmt->close();
@@ -219,15 +219,15 @@ function editNote($id, $userid, $note)
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($query);
         if ($stmt === false) {
-            $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'prepare() failed ' . $mysqli->error . '<br />';
         }
         // Parameter an Query binden mit bind_param();
         if (!$stmt->bind_param('sss', $title, $content, $id)) {
-            $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'bind_param() failed ' . $mysqli->error . '<br />';
         }
         // query ausführen mit execute();
         if (!$stmt->execute()) {
-            $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'execute() failed ' . $mysqli->error . '<br />';
         }
         // Verbindung schliessen
         $stmt->close();
@@ -240,40 +240,44 @@ function deleteNoteById($id, $userid)
     // Database connection
     include('sqlConnection.php');
 
+    $errorString = '';
+
     // SELECT Query erstellen
     $query = "SELECT * FROM note WHERE id = ?";
     // Query vorbereiten mit prepare();
     $stmt = $mysqli->prepare($query);
     if ($stmt === false) {
-        $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'prepare() failed ' . $mysqli->error . '<br />';
     }
     // Parameter an Query binden mit bind_param();
     if (!$stmt->bind_param('s', $id)) {
-        $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'bind_param() failed ' . $mysqli->error . '<br />';
     }
     // query ausführen mit execute();
     if (!$stmt->execute()) {
-        $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'execute() failed ' . $mysqli->error . '<br />';
     }
     // Verbindung schliessen
     $notes = $stmt->get_result();
     $stmt->close();
 
-    if ($notes[0] && $notes[0]['userid'] === $userid) {
+    $note = mysqli_fetch_assoc($notes);
+    if ($note && $note['fk_userid'] === $userid) {
         // SELECT Query erstellen
-        $query = "DELETE * FROM note WHERE id = ?";
+        $query = "DELETE FROM note WHERE id = ?";
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($query);
         if ($stmt === false) {
-            $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'prepare() failed ' . $mysqli->error . '<br />';
         }
+        echo $errorString;
         // Parameter an Query binden mit bind_param();
         if (!$stmt->bind_param('s', $id)) {
-            $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'bind_param() failed ' . $mysqli->error . '<br />';
         }
         // query ausführen mit execute();
         if (!$stmt->execute()) {
-            $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'execute() failed ' . $mysqli->error . '<br />';
         }
         // Verbindung schliessen
         $stmt->close();

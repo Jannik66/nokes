@@ -86,16 +86,16 @@ function createUser($user)
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($query);
         if ($stmt === false) {
-            $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'prepare() failed ' . $mysqli->error . '<br />';
         }
         // Parameter an Query binden mit bind_param();
         $hashedPW = password_hash($password, PASSWORD_BCRYPT);
         if (!$stmt->bind_param('ssss', $userid, $name, $email, $hashedPW)) {
-            $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'bind_param() failed ' . $mysqli->error . '<br />';
         }
         // query ausführen mit execute();
         if (!$stmt->execute()) {
-            $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'execute() failed ' . $mysqli->error . '<br />';
         }
         // Verbindung schliessen
         $stmt->close();
@@ -219,16 +219,16 @@ function editUser($userid, $user)
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($query);
         if ($stmt === false) {
-            $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'prepare() failed ' . $mysqli->error . '<br />';
         }
         // Parameter an Query binden mit bind_param();
         $hashedPW = password_hash($password, PASSWORD_BCRYPT);
         if (!$stmt->bind_param('ssss', $name, $email, $hashedPW, $userid)) {
-            $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'bind_param() failed ' . $mysqli->error . '<br />';
         }
         // query ausführen mit execute();
         if (!$stmt->execute()) {
-            $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+            $errorString .= 'execute() failed ' . $mysqli->error . '<br />';
         }
 
         if (empty($errorString)) {
@@ -246,20 +246,22 @@ function deleteUserById($userid)
 {
     // Database connection
     include('sqlConnection.php');
+
+    $errorString = '';
     // SELECT Query erstellen
-    $query = "DELETE * FROM user WHERE id = ?";
+    $query = "DELETE FROM user WHERE userid = ?";
     // Query vorbereiten mit prepare();
     $stmt = $mysqli->prepare($query);
     if ($stmt === false) {
-        $errorString .= 'prepare() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'prepare() failed ' . $mysqli->error . '<br />';
     }
     // Parameter an Query binden mit bind_param();
     if (!$stmt->bind_param('s', $userid)) {
-        $errorString .= 'bind_param() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'bind_param() failed ' . $mysqli->error . '<br />';
     }
     // query ausführen mit execute();
     if (!$stmt->execute()) {
-        $errorString .= 'execute() failed ' . $mysqli->errorString . '<br />';
+        $errorString .= 'execute() failed ' . $mysqli->error . '<br />';
     }
     // Verbindung schliessen
     $stmt->close();
