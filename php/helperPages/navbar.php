@@ -1,6 +1,6 @@
 <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="./index.php"><img src="./assets/logo.png" height="50" width="50" />Nokes</a>
+        <a class="navbar-brand" href="./index.php"><img src="./assets/logo.png" height="50" width="50" alt="Lunaka"/>Nokes</a>
         <div class="d-flex justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <?php
