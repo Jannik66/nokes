@@ -1,9 +1,13 @@
+<!-- Navbar mit Bootstrap Attributen -->
 <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <!-- Container für die Inhalte der Navbar -->
     <div class="container-fluid">
+        <!-- Einfügen des Titels und des Logos als Verlinkung auf index.php -->
         <a class="navbar-brand" href="./index.php"><img src="./assets/logo.png" height="50" width="50" alt="Lunaka" />Nokes</a>
         <div class="d-flex justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <?php
+                // Falls eine Session vorhanden ist werden die Elemente für die Nutzung des Tools angezeigt
                 if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
                     echo <<<EOT
                         <li class="nav-item">
@@ -20,6 +24,7 @@
                             </ul>
                         </li>
                     EOT;
+                    // Falls keine Session vorhanden ist werden die Anmeldung und Registrierung angezeigt
                 } else {
                     echo <<<EOT
                     <li class="nav-item">
