@@ -12,11 +12,6 @@ function doneFilter($note)
 }
 
 if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
-    foreach (getNotesByUserId($_SESSION["userid"]) as $note) {
-        if (array_key_exists($note[0], $_POST)) {
-            markNoteAsDone($note[0], $_SESSION['userid']);
-        }
-    }
     $notes = getNotesByUserId($_SESSION["userid"]);
     $openNotes = array_filter($notes, 'openFilter');
     $doneNotes = array_filter($notes, 'doneFilter');
@@ -54,10 +49,9 @@ if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
                             <div class="card-body">
                                 <h5 class="card-title">{$note[1]}</h5>
                                 <p class="card-text">{$note[2]}</p>
-                                <form method="post"> 
-                                    <input class="btn btn-primary" type="submit" name="{$note[0]}" value="Done" /> 
-                                </form>
+                                <a class="btn btn-success" href="./helperPages/markNoteAsDone.php?id={$note[0]}" role="button">Done</a>
                                 <a class="btn btn-primary" href="detail.php?id={$note[0]}" role="button">Detail</a>
+                                <a class="btn btn-danger" href="./helperPages/deleteNote.php?id={$note[0]}" role="button">Delete</a>
                             </div>
                         </div>
                     </div>
@@ -77,11 +71,8 @@ if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
                             <div class="card-body">
                                 <h5 class="card-title">{$note[1]}</h5>
                                 <p class="card-text">{$note[2]}</p>
-                                <form method="post"> 
-                                    <input class="btn btn-primary" type="submit" name="{$note[0]}" value="Done" /> 
-                                </form>
-                                <a class="btn btn-primary" href="detail.php?id={$note[0]}" role="button">Detail</a>
                             </div>
+                            <a class="btn btn-danger" href="./helperPages/deleteNote.php?id={$note[0]}" role="button">Delete</a>
                         </div>
                     </div>
                     EOT;

@@ -1,5 +1,5 @@
 <?php
-include('../../server/user.php');
+include('../server/user.php');
 session_start();
 $error = deleteUserById($_SESSION['userid']);
 if (empty($error)) {

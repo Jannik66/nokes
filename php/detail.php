@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             echo "<div class=\"alert alert-danger\" role=\"alert\">" . $error . "</div>";
         }
         ?>
-        <form action="./detail.php" method="post">
+        <form action="./detail.php?id=<?php echo $note[0] ?>" method="post">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" name="title" class="form-control" id="title" maxLength="50" value="<?php echo $note[1] ?>" required />
