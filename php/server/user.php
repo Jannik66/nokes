@@ -171,9 +171,6 @@ function editUser($userid, $user)
 
     $errorString = '';
 
-    $letterOnly = "/^[a-zA-Z]+$/i";
-    $passwordPattern = "/^[ -~]+$/";
-
     // Validation of name
     // not empty
     // length: 3-45

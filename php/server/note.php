@@ -32,7 +32,7 @@ function createNote($note)
     ) {
         $content = htmlentities($trimmedContent);
     } else {
-        $errorString .= "Invalid name\n";
+        $errorString .= "Invalid content\n";
     }
 
     // Validation of userid

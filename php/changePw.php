@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <div class="form-group">
                 <label for="password">New Password</label>
                 <!-- required setzen und clientseitige Validation einfügen -->
-                <input type="password" name="password" class="form-control" id="password" pattern="^[ -~]+$" minLength="8" maxLength="255" required />
+                <input type="password" name="password" class="form-control" id="password" pattern="^[ -~]+$" minLength="8" maxLength="255" placeholder="uppercase/lowercase letters, numbers, special characters and must be at least 8 characters long" required />
             </div>
             <div class="d-grid mt-4">
                 <!-- Hinzufügen des Submitbuttons -->
