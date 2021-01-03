@@ -1,17 +1,13 @@
 <?php
-$id = $_GET['id'];
-include('../server/note.php');
+include('../server/user.php');
 session_start();
 if (empty($_SESSION['loggedin'])) {
     header("Location: index.php");
 }
 
-$note = getNoteById($id, $_SESSION['userid']);
-
 $error = "";
-
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $error = editNote($id, $_SESSION['userid'], $_POST);
+    $error = changeUserPassword($_SESSION['userid'], $_POST);
     if (empty($error)) {
         header("Location: index.php");
     }
@@ -24,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nokes | <?php echo $note[1] ?></title>
+    <title>Nokes | Change Password</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,8 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     include('./helperPages/navbar.php');
     ?>
     <div class="container col-4 mt-5">
-        <h1><?php echo $note[1] ?></h1>
-
+        <h1>Change Password</h1>
         <?php
         // Ausgabe der Fehlermeldungen
         if (strlen($error)) {
@@ -45,18 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         ?>
         <form action="" method="post">
             <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" name="title" class="form-control" id="title" maxLength="50" value="<?php echo $note[1] ?>" required />
+                <label for="oldPassword">Old Password</label>
+                <input type="password" name="oldPassword" class="form-control" id="oldPassword" required />
             </div>
+
             <div class="form-group">
-                <label for="content">Content</label>
-                <textarea name="content" id="title" class="form-control" rows="5" cols="50" name=" description" maxLength="500" required><?php echo $note[2] ?></textarea>
+                <label for="password">New Password</label>
+                <input type="password" name="password" class="form-control" id="password" pattern="^[ -~]+$" minLength="8" maxLength="255" required />
             </div>
-            <input type="hidden" name="fk_userid" value="<?php echo $note[4] ?>" />
-            <input type="hidden" name="done" value="<?php echo $note[3] ?>" />
             <div class="d-grid mt-4">
-                <button class="btn btn-dark" type="submit" name="button" value="submit">Edit Note</button>
-            </div>
+                <button class="btn btn-dark" type="submit" name="button" value="submit">Change Password</button>
         </form>
     </div>
 </body>

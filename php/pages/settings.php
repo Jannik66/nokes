@@ -1,6 +1,10 @@
 <?php
 include('../server/user.php');
 session_start();
+if (empty($_SESSION['loggedin'])) {
+    header("Location: index.php");
+}
+
 $error = "";
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $error = editUser($_SESSION['userid'], $_POST);
@@ -8,8 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         header("Location: index.php");
     }
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,17 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </head>
 
 <body>
-    <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.php">Nokes</a>
-            <div class="d-flex justify-content-end" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php
+    include('./helperPages/navbar.php');
+    ?>
     <div class="container col-4 mt-5">
-        <h1> Settings </h1>
+        <h1>Settings | Settings</h1>
 
         <?php
         // Ausgabe der Fehlermeldungen
@@ -43,34 +39,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             echo "<div class=\"alert alert-danger\" role=\"alert\">" . $error . "</div>";
         }
         ?>
-        <?php
-        if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
-            echo <<<EOT
-    <form action ="" method="post">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" name="name" class="form-control" id="name" minLength="3" maxLength="45" value="{$_SESSION['name']}" required/>
-        </div>
+        <form action="" method="post">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="name" class="form-control" id="name" minLength="3" maxLength="45" value="<?php echo $_SESSION['name'] ?>" required />
+            </div>
 
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" name="email" class="form-control" id="email" value="{$_SESSION['email']}" required/>
-        </div>
-
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" class="form-control" id="password" 
-            pattern="^[ -~]+$" minLength="8" maxLength="255" value="" required/>
-        </div>
-        <div class="d-grid mt-4">
-        <button class="btn btn-dark" type="submit" name="button" value="submit">Submit</button>
-    </form>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" class="form-control" id="email" value="<?php echo $_SESSION['email'] ?>" required />
+            </div>
+            <div class="d-grid mt-4">
+                <button class="btn btn-dark" type="submit" name="button" value="submit">Submit</button>
+        </form>
     </div>
- EOT;
-        } elseif (empty($_SESSION['loggedin'])) {
-            header("Location: index.php");
-        }
-        ?>
     </div>
 </body>
 

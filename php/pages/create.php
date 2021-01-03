@@ -2,6 +2,10 @@
 include('../server/note.php');
 include('../server/user.php');
 session_start();
+if (empty($_SESSION['loggedin'])) {
+    header("Location: index.php");
+}
+
 $error = "";
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $error = createNote($_POST);
@@ -19,13 +23,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nokes</title>
+    <title>Nokes | New Note</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
+    <?php
+    include('./helperPages/navbar.php');
+    ?>
     <div class="container col-4 mt-5">
         <h1>Create Note</h1>
 
@@ -34,32 +41,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if (strlen($error)) {
             echo "<div class=\"alert alert-danger\" role=\"alert\">" . $error . "</div>";
         }
-
-
-        if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
-            echo <<<EOT
-    <form action ="" method="post">
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" name="title" class="form-control" id="title" maxLength="50" required/>
-        </div>
-
-        <div class="form-group">
-            <label for="content">Content</label>
-            <textarea name="content" id="title" class ="form-control" rows = "5" cols = "50" maxLength="500" name = "description" required></textarea>
-        </div>      
-        
-        <input type="hidden" name="userid" value="{$_SESSION['userid']}" />
-
-        <div class="d-grid mt-4">
-        <button class="btn btn-dark type="submit" name="button" value="submit">Submit</button>
-    </form>
-    </div>
- EOT;
-        } elseif (empty($_SESSION['loggedin'])) {
-            header("Location: index.php");
-        }
         ?>
+        <form action="" method="post">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="title" class="form-control" id="title" maxLength="50" required />
+            </div>
+
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea name="content" id="title" class="form-control" rows="5" cols="50" maxLength="500" name="description" required></textarea>
+            </div>
+
+            <input type="hidden" name="userid" value="<?php echo $_SESSION['userid'] ?>" />
+
+            <div class="d-grid mt-4">
+                <button class="btn btn-dark" type="submit" name="button" value="submit">Submit</button>
+            </div>
+        </form>
     </div>
 </body>
 

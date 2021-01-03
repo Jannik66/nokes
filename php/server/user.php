@@ -200,30 +200,16 @@ function editUser($userid, $user)
         $errorString .= "Invalid email\n";
     }
 
-    // Validation of password
-    // not empty
-    // length: 8-255
-    if (
-        !empty($user["password"]) &&
-        strlen($user["password"]) >= 8 && strlen($user["password"]) <= 255 &&
-        preg_match($passwordPattern, $user["password"])
-    ) {
-        $password = htmlentities($user["password"]);
-    } else {
-        $errorString .= "Invalid password\n";
-    }
-
     if (empty($errorString)) {
         // INPUT Query erstellen
-        $query = "UPDATE user SET name = ?, email = ?, password = ? where userid = ?";
+        $query = "UPDATE user SET name = ?, email = ? where userid = ?";
         // Query vorbereiten mit prepare();
         $stmt = $mysqli->prepare($query);
         if ($stmt === false) {
             $errorString .= 'prepare() failed ' . $mysqli->error . '<br />';
         }
         // Parameter an Query binden mit bind_param();
-        $hashedPW = password_hash($password, PASSWORD_BCRYPT);
-        if (!$stmt->bind_param('ssss', $name, $email, $hashedPW, $userid)) {
+        if (!$stmt->bind_param('sss', $name, $email, $userid)) {
             $errorString .= 'bind_param() failed ' . $mysqli->error . '<br />';
         }
         // query ausführen mit execute();
@@ -240,6 +226,86 @@ function editUser($userid, $user)
         $stmt->close();
     }
 
+    return $errorString;
+}
+function changeUserPassword($userid, $user)
+{
+    // Database connection
+    include('sqlConnection.php');
+
+    $passwordPattern = "/^[ -~]+$/";
+
+    $errorString = '';
+
+    // validate password
+    if (isset($user['oldPassword'])) {
+        //trim
+        $oldPassword = $user['oldPassword'];
+    } else {
+        $errorString .= "Please provide your old password";
+    }
+
+    // Validation of password
+    // not empty
+    // length: 8-255
+    if (
+        !empty($user["password"]) &&
+        strlen($user["password"]) >= 8 && strlen($user["password"]) <= 255 &&
+        preg_match($passwordPattern, $user["password"])
+    ) {
+        $password = $user["password"];
+    } else {
+        $errorString .= "Invalid password\n";
+    }
+
+    if (empty($errorString)) {
+
+        $query = "SELECT * FROM user where userid=? LIMIT 1";
+        $stmt = $mysqli->prepare($query);
+
+        $stmt->bind_param("s", $userid);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        $firstRow = $result->fetch_assoc();
+
+        if (!isset($firstRow)) {
+            $errorString .= "Invalid userid";
+        }
+
+        if (empty($errorString)) {
+            if (!password_verify($oldPassword, $firstRow['password'])) {
+                $errorString .= "Invalid old Password";
+            } else {
+                // INPUT Query erstellen
+                $query = "UPDATE user SET password = ? where userid = ?";
+                // Query vorbereiten mit prepare();
+                $stmt = $mysqli->prepare($query);
+                if ($stmt === false) {
+                    $errorString .= 'prepare() failed ' . $mysqli->error . '<br />';
+                }
+                // Parameter an Query binden mit bind_param();
+                $hashedPW = password_hash($password, PASSWORD_BCRYPT);
+                if (!$stmt->bind_param('ss', $hashedPW, $userid)) {
+                    $errorString .= 'bind_param() failed ' . $mysqli->error . '<br />';
+                }
+                // query ausführen mit execute();
+                if (!$stmt->execute()) {
+                    $errorString .= 'execute() failed ' . $mysqli->error . '<br />';
+                }
+
+                if (empty($errorString)) {
+                    session_regenerate_id();
+                }
+                // Verbindung schliessen
+                $stmt->close();
+            }
+        }
+
+        $result->free();
+    }
     return $errorString;
 }
 function deleteUserById($userid)
