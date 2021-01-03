@@ -1,10 +1,15 @@
 <?php
-$id = $_GET['id']; // GET-Abfrage auf mitgegebene ID
-include('../server/note.php'); // Datei einbinden mit der Funktion Notiz löschen
+// GET-Abfrage auf mitgegebene ID
+$id = $_GET['id']; 
+// Datei einbinden mit der Funktion Notiz löschen
+include('../server/note.php'); 
 session_start(); 
-$error = deleteNoteById($id, $_SESSION['userid']); // Aufruf der deleteNoteById Funktion mit mitgegebenen Parameter
+// Aufruf der deleteNoteById Funktion mit mitgegebenen Parameter
+$error = deleteNoteById($id, $_SESSION['userid']); 
 if (empty($error)) {
-    header("Location: ../index.php"); // Bei Erfolg Weiterleitung auf index.php
+    // Bei Erfolg Weiterleitung auf index.php
+    header("Location: ../index.php"); 
 } else {
-    echo $error; // bei nicht Erfolg Ausgabe des Fehlers
+    // bei nicht Erfolg Ausgabe des Fehlers
+    echo $error; 
 }

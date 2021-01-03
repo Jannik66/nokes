@@ -1,19 +1,25 @@
 <?php
+// Datei einbinden mit den Notizen
 include('./server/note.php');
 session_start();
 
+// Filter für die Notes welche bei Done auf 0 gesetzt sind
 function openFilter($note)
 {
     return $note[3] === 0;
 }
+// Filter für die Notes welche bei Done auf 1 gesetzt sind
 function doneFilter($note)
 {
     return $note[3] === 1;
 }
 
 if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
+    // Abfrage aller Notizen aufgrund der userid
     $notes = getNotesByUserId($_SESSION["userid"]);
+    // Abspeichern aller Notizen welche bei Done auf 0 gesetzt sind
     $openNotes = array_filter($notes, 'openFilter');
+    // Abspeichern aller Notizen welche bei Done auf 1 gesetzt sind
     $doneNotes = array_filter($notes, 'doneFilter');
 };
 ?>
@@ -25,6 +31,7 @@ if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Nokes | Home</title>
+    <!-- Icon für die Webseite -->
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -32,16 +39,19 @@ if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
 
 <body>
     <?php
+    // Einbindung der Navbar
     include('./helperPages/navbar.php');
     ?>
     <div class="container mt-4">
         <?php
+        // Falls eine Session vorhanden ist Container und Titel hinzufügen
         if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
             echo <<<EOT
                 <h2>Open</h2>
                 <div class="container">
                     <div class="row">
             EOT;
+            // Jede Notiz welche bei done auf 0 gesetzt ist als Card hinzufügen
             foreach ($openNotes as $note) {
                 echo <<<EOT
                     <div class="col-sm">
@@ -64,6 +74,7 @@ if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
                 <div class="container">
                     <div class="row">
             EOT;
+            // Jede Notiz welche bei done auf 1  gesetzt ist als Card hinzufügen
             foreach ($doneNotes as $note) {
                 echo <<<EOT
                     <div class="col-sm">
@@ -81,6 +92,7 @@ if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
                 </div>
                     </div>
             EOT;
+            // Falls keine Session vorhanden ist Meldung anzeigen
         } else {
             echo <<<EOT
                 <div class="alert alert-warning" role="alert">Login or register to use Nokes</div>
@@ -88,6 +100,8 @@ if (isset($_SESSION['loggedin']) and $_SESSION['loggedin']) {
         };
         ?>
     </div>
+
+    <!-- Einbindung der Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
 </body>

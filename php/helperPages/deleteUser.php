@@ -1,11 +1,16 @@
 <?php
-include('../server/user.php'); // Datei einbinden mit der Funktion User löschen
+// Datei einbinden mit der Funktion User löschen
+include('../server/user.php'); 
 session_start();
-$error = deleteUserById($_SESSION['userid']); // Aufruf der deleteUserById Funktion mit mitgegebenen Parameter
+// Aufruf der deleteUserById Funktion mit mitgegebenen Parameter
+$error = deleteUserById($_SESSION['userid']); 
 if (empty($error)) {
-    $_SESSION = array(); // Sessionarray wird neu gesetzt
+    // Sessionarray wird neu gesetzt
+    $_SESSION = array(); 
     session_destroy();
-    header("Location: ../index.php"); // Bei Erfolg Weiterleitung auf index.php
+    // Bei Erfolg Weiterleitung auf index.php
+    header("Location: ../index.php"); 
 } else {
-    echo $error; // bei nicht Erfolg Ausgabe des Fehlers
+    // bei nicht Erfolg Ausgabe des Fehlers
+    echo $error; 
 }

@@ -1,6 +1,8 @@
 <?php
 session_start();
-$_SESSION = array(); // Sessionarray wird neu gesetzt
+// Sessionarray wird neu gesetzt
+$_SESSION = array(); 
 session_destroy();
-header("Location: ../index.php"); // Weiterleitung auf index.php
+// Weiterleitung auf index.php
+header("Location: ../index.php"); 
 ?>
