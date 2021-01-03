@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         <form action="./register.php" method="post">
             <div class="form-group">
                 <label for="userid">Username</label>
-                <input type="text" name="userid" class="form-control" id="userid" pattern="^[a-zA-Z]+$" minLength="3" maxLength="20" placeholder="Only letters" value="" required />
+                <input type="text" name="userid" class="form-control" id="userid" pattern="^[a-zA-Z]+$" minLength="3" maxLength="20" value="" required />
             </div>
 
             <div class="form-group">
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="Mixture of uppercase and lowercase, numbers, special characters, no mutated vowels and must be at least 8 characters long" pattern="^[ -~]+$" minLength="8" maxLength="255" value="" required />
+                <input type="password" name="password" class="form-control" id="password" pattern="^[ -~]+$" minLength="8" maxLength="255" value="" required />
             </div>
             <div class="d-grid mt-4">
                 <button class="btn btn-dark" type="submit" name="button" value="submit">Submit</button>
